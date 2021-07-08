@@ -6,5 +6,9 @@ class Article(models.Model):
     description = models.CharField(max_length=5000)
 
 
+    def __str__(self):
+         return self.title
+
+
 
 
