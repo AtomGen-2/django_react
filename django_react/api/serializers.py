@@ -7,20 +7,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password']
-
-class ArticleSerializer(serializers.ModelSerializer):
-    # title =  serializers.CharField(max_length=100)
-    # description = serializers.CharField(max_length=5000)
-
-    # def create(self, validated_data):
-    #     return Article.objects.create(validated_data)
-
-    # def update(self, instance, validated_data):
-    #     instance.title = validated_data.get('title', instance.title)
-    #     instance.description = validated_data.get('description', instance.description)
-    class Meta:
-        model = Article
-        fields = ['id', 'title', 'description']
         extra_kwargs = {'password':{
             'write_only':True, 
             'required':True
@@ -29,3 +15,9 @@ class ArticleSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user = user)
         return user 
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'description']
