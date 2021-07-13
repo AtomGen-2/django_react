@@ -1,7 +1,9 @@
+from django.db.models import query
 from rest_framework import serializers
+from rest_framework import authentication
 from rest_framework.serializers import Serializer
 from django.http import request, JsonResponse
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from .models import Article
 from .serializers import ArticleSerializer
 from rest_framework.parsers import JSONParser
@@ -13,7 +15,25 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
+from .serializers import UserSerializer
 
+# ModelViewSets
+class ArticleViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    authentication_classes = (TokenAuthentication,)
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+'''
 # mixin views
 class ArticleList(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
     queryset = Article.objects.all()
@@ -34,6 +54,7 @@ class ArticleDetails(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.
         return self.update(request, id = id)
     def delete(self, request, id):
         return self.destroy(request, id = id)
+'''
 
 # class based non mixin views
 '''
